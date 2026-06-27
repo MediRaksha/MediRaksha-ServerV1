@@ -1,0 +1,6 @@
+@ERPWebMediRaksha_HostAddress = http://localhost:5216
+
+GET {{ERPWebMediRaksha_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
