@@ -1,12 +1,14 @@
-﻿using ERP.ServicesCore.Interfaces.Login;
+﻿using ERP.EntitiesCore.Login;
+using ERP.ServicesCore.Interfaces.Login;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ERP.EntitiesCore.Login;
 
 namespace ERPWebMediRaksha.Controllers.Login
 {
     [ApiController]
     [Route("api/[controller]")]
+    [EnableCors("AllowAll")]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _service;

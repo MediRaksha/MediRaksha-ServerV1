@@ -11,5 +11,10 @@ namespace ERP.DataCore.Interfaces
     {
         Task<List<T>> GetListAsync<T>(string procedureName, SqlParameter[] parameters) where T : new();
         Task<int> ExecuteAsync(string procedureName, SqlParameter[] parameters);
+        Task<(THeader, List<TItem>)> GetMultipleAsync<THeader, TItem>(string procedureName, SqlParameter[] parameters) where THeader : new() where TItem : new();
+        Task<List<T>> GetSafeListAsync<T>(
+       string procedureName,
+       SqlParameter[] parameters)
+       where T : new();
     }
 }

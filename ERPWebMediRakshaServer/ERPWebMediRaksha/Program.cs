@@ -1,16 +1,20 @@
+using ERP.DataCore.Interfaces;
+using ERP.DataCore.Services;
 using ERP.RepositoriesCore.Customer;
 using ERP.RepositoriesCore.Interfaces.Customers;
 using ERP.RepositoriesCore.Interfaces.Login;
+using ERP.RepositoriesCore.Interfaces.Sales;
 using ERP.RepositoriesCore.Services.Login;
+using ERP.RepositoriesCore.Services.Sales;
 using ERP.ServicesCore.Interfaces.Customers;
 using ERP.ServicesCore.Interfaces.Login;
+using ERP.ServicesCore.Interfaces.Sales;
 using ERP.ServicesCore.Services.Customer;
 using ERP.ServicesCore.Services.Login;
+using ERP.ServicesCore.Services.Sales;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using ERP.DataCore.Interfaces;
-using ERP.DataCore.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +28,11 @@ builder.Services.AddScoped<IMedicineService, MedicineService>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<JwtTokenGenerator>();
+
+//Sales Services
+builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
+
 
 builder.Services.AddAuthentication(
     JwtBearerDefaults.AuthenticationScheme)
@@ -53,6 +62,15 @@ builder.Services.AddAuthentication(
 builder.Services.AddAuthorization();
 // Add services
 builder.Services.AddControllers();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -67,7 +85,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 
